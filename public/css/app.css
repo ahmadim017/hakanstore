@@ -1,0 +1,64 @@
+.table .thead-dark th {
+  color: #fff;
+  background-color: #171d26;
+  border-color: #171d26;
+}
+
+.btn-dark {
+  color: #fff;
+  background-color: #171d26;
+  border-color: #171d26;
+}
+
+.form-group label {
+  font-weight: bold;
+}
+
+.turbolinks-progress-bar {
+  height: 3px;
+  background-color: white;
+}
+
+.shadow-sm {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
+}
+
+.card-header {
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 0;
+  background-color: #171d25;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  color: white;
+}
+
+.btn.focus,
+.btn:focus {
+  outline: 0;
+  box-shadow: none;
+}
+
+.form-control:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: none;
+}
+
+/**
+* frontend custom
+*/
+
+/* Centered text */
+
+.category-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  position: absolute;
+}
+
