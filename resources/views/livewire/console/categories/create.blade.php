@@ -1,6 +1,6 @@
 <div>
     <div class="row justify-content-center">
-        <div class="col-md-12 mt-5">
+        <div class="col-md-12">
             <div class="card border-0 shadow rounded-lg">
                 <div class="card-header">
                     <i class="fa fa-folder"></i>ADD CATEGORY

@@ -23,7 +23,8 @@ class Index extends Component
            storage::disk('public')->delete('categories/'. $category->name);
            $category->delete();
         }
-        return redirect()->back()->session()->flash('success','Data category berhasil dihapus');
+        session()->flash('error','Data category berhasil dihapus');
+        return redirect()->back();
     }
 
     public function render()

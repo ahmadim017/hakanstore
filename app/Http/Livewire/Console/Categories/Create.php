@@ -29,7 +29,7 @@ class Create extends Component
         $category = Category::create([
             'name' => $this->name,
             'slug' => Str::slug($this->name, '-'),
-            'image' => $this->image->hasName()
+            'image' => $this->image->hashName()
         ]);
    
         if ($category) {

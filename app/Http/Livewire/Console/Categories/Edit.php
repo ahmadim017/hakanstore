@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Category;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class Edit extends Component
 {
@@ -18,7 +19,7 @@ class Edit extends Component
 
     public function mount($id)
     {
-        $category = Category::findOrfail($id);
+        $category = Category::find($id);
 
         if ($category) {
             $this->categoryId = $category->id;
@@ -32,25 +33,28 @@ class Edit extends Component
             'name' => 'required'
         ]);
 
-        $category = Category::findOrfail($this->categoryId);
+        $category = Category::find($this->categoryId);
 
         if ($category) {
             if ($this->image == null) {
+
                 $category->update([
                     'name' => $this->name,
                     'slug' => Str::slug($this->name, '-'),
                 ]);
+
             } else {
+                Storage::disk('public')->delete('categories/'. $category->image);
                 $this->image->store('public/categories');
 
                 $category->update([
                     'name' => $this->name,
                     'slug' => Str::slug($this->name, '-'),
                     'image' => $this->image->hashName()
-                ])
+                ]);
             }
             session()->flash('success','Data berhasil diupdate');
-            return redirect()->back();
+            return redirect()->route('console.categories.index');
         }
     }
     public function render()

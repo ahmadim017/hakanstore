@@ -40,6 +40,25 @@ route::prefix('console')->group(function(){
 
         route::livewire('/categories/edit/{id}','console.categories.edit')
         ->layout('layouts.console')->name('console.categories.edit');
+
+        route::livewire('/products','console.products.index')
+        ->layout('layouts.console')->name('console.products.index');
+
+        route::livewire('/products/create','console.products.create')
+        ->layout('layouts.console')->name('console.products.create');
+
+        route::livewire('/products/edit/{id}','console.products.edit')
+        ->layout('layouts.console')->name('console.products.edit');
+
+        //voucher
+        route::livewire('/voucher','console.voucher.index')
+        ->layout('layouts.console')->name('console.voucher.index');
+
+        route::livewire('/voucher/create','console.voucher.create')
+        ->layout('layouts.console')->name('console.voucher.create');
+
+        route::livewire('/voucher/edit/{id}','console.voucher.edit')
+        ->layout('layouts.console')->name('console.voucher.edit');
         
     });
 });

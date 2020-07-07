@@ -4,7 +4,7 @@
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <meta http-equiv="X-UA-Compatible" content="ie=edge">
- <title>Login - Console</title>
+ <title>Login - Store</title>
  <link rel="shortcut icon" href="{{ asset('images/basket.png') }}" type="image/x-icon"/>
  <!-- CSS only -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
@@ -22,7 +22,7 @@
             <div class="col-md-4">
                 <div class="text-center mb-4">
                 <img src="{{ asset('images/basket.png') }}" style="width:100px;background-color: #fff;border-radius: 50%;padding: 8px;">
-                <h3 class="font-weight-bold mt-2">SK STORE</h3>
+                <h3 class="font-weight-bold mt-2">Hakan STORE</h3>
                 </div>
 
                  @yield('content')

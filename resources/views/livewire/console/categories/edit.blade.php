@@ -11,7 +11,8 @@
                         <div class="col-md-12">
                             @if($image)
                             <div class="text-center">
-                                <img src="{{ $image->temporaryUrl() }}" alt="" style="height: 150px;width:150px;object-fit:cover" class="img-thumbnail">
+                                <img src="{{ $image->temporaryUrl() }}" alt="" style="height: 150px;width:150px;object-fit:cover"
+                                    class="img-thumbnail">
                             </div>
                             @else
                                 <div class="text-center">
@@ -25,16 +26,18 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>Image</label>
-                                <input type="file" id="image" class="formcontrol" wire:model="image">
-                               @error('image')
-                               <div class="invalid-feedback d-block">
-                                 {{$message }}
-                               </div>
-                               @enderror
-                           </div>
-                           <div class="form-group">
-                               <label>Category Name</label>
-                               <input type="text" wire:model.lazy="name" class="form-control @error('name') is-invalid @enderror" placeholder="Fullname">
+                                <input type="file" id="image" class="form-control" wire:model="image">
+                                @error('image')
+                                <div class="invalid-feedback d-block">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label>Category Name</label>
+                                <input type="text" wire:model.lazy="name"
+                                    class="form-control @error('name') is-invalid @enderror" placeholder="Fullname">
                                 @error('name')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -44,11 +47,10 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btnprimary">UPDATE</button>
-
+                    <button type="submit" class="btn btn-primary">UPDATE</button>
                     <button type="reset" class="btn btn-warning">RESET</button>
                 </form>
             </div>
-        </div> 
+        </div>
     </div>
 </div>

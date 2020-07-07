@@ -5,6 +5,8 @@ Turbolinks.start()
 
 Turbolinks.setProgressBarDelay(1)
 
-$(document).on('turbolinks:load', function(){
-    $('.dropdown-toggle').dropdown();
+$(document).on('turbolinks:load', function (){
+  //dropdown menu
+  $('.dropdown-toggle').dropdown();
+
 });
