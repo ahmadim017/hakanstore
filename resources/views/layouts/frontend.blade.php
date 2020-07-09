@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -5,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Toko Online</title>
+    <title>Hakan Store</title>
     <link rel="shortcut icon" href="{{ asset('images/basket.png') }}" type="image/x-icon" />
     <!-- CSS only -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
@@ -35,7 +36,7 @@
 
     <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark text-white mb-5"
         style="background-color: #171d26!important;">
-        <a href="/" class="navbar-brand font-weight-bold"><i class="fa fa-carrot"></i> SK STORE</a>
+        <a href="/" class="navbar-brand font-weight-bold"><i class="fa fa-carrot"></i> Hakan STORE</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-sk">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -43,11 +44,14 @@
             <!-- categories -->
             <ul class="navbar-nav">
                 <li class="nav-item dropdown">
-                    <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false">
-                        <i class="fa fa-list-ul"></i> CATEGORIES
+                    <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-list-ul"></i> CATEGORIES
                     </a>
-                </li>
+                    <div class="dropdown-menu border-0 shadow-sm dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                       @foreach ($global_categories as $category)
+                          <a class="dropdown-item" href="/category/{{ $category->slug }}"><img src="{{ Storage::url('public/categories/'.$category->image) }}" class="rounded" style="width: 20px"> {{ $category->name }}</a>
+                       @endforeach
+                    </div>
+                 </li>
             </ul>
             <!-- end categories -->
 

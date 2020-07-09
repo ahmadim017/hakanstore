@@ -67,7 +67,7 @@
                     <a class="nav-link" href="{{route('console.sliders.index')}}"><i class="fa fa-laptop"></i> Sliders</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fa fa-users"></i> Users</a>
+                    <a class="nav-link" href="{{route('console.users.index')}}"><i class="fa fa-users"></i> Users</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right" style="margin-right: 0px">

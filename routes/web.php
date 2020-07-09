@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\View;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,16 +13,52 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::livewire('/', 'frontend.home.index')
+->layout('layouts.frontend')->name('root');
+
+View::composer('*', function($view) {
+    $global_categories = \App\Category::latest()->take(6)->get();
+    $view->with('global_categories', $global_categories);
 });
 
 Route::group(['middleware' => 'guest'], function () {
+
+    Route::livewire('/customer/register', 'customer.auth.register')
+    ->layout('layouts.frontend')->name('customer.auth.register');
+
+    Route::livewire('/customer/login', 'customer.auth.login')
+    ->layout('layouts.frontend')->name('customer.auth.login');
+
+    Route::livewire('/customer/logout', 'customer.auth.logout')
+    ->layout('layouts.frontend')->name('customer.auth.logout');
+
     route::livewire('/login','console.login')
     ->layout('layouts.auth')->name('console.login');
 
     route::livewire('/logout','console.logout')
     ->layout('layouts.console')->name('console.logout');
+
+});
+
+Route::prefix('customer')->group(function () {
+
+    Route::group(['middleware' => 'auth:customer'], function(){
+
+        //dashboard
+        Route::livewire('/dashboard', 'customer.dashboard.index')
+        ->layout('layouts.frontend')->name('customer.dashboard.index');
+        //order
+        Route::livewire('/orders', 'customer.orders.index')
+        ->layout('layouts.frontend')->name('customer.orders.index');
+
+        Route::livewire('/orders/{id}', 'customer.orders.show')
+        ->layout('layouts.frontend')->name('customer.orders.show');
+        //profile
+
+        Route::livewire('/profile', 'customer.profile.index')
+        ->layout('layouts.frontend')->name('customer.profile.index');
+
+    });
 });
 
 route::prefix('console')->group(function(){
@@ -85,6 +121,28 @@ route::prefix('console')->group(function(){
         //sliders
         route::livewire('/sliders','console.sliders.index')
         ->layout('layouts.console')->name('console.sliders.index');
+
+        //user
+        route::livewire('/users','console.users.index')
+        ->layout('layouts.console')->name('console.users.index');
+
+        route::livewire('/users/create','console.users.create')
+        ->layout('layouts.console')->name('console.users.create');
+
+        route::livewire('/users/edit/{id}','console.users.edit')
+        ->layout('layouts.console')->name('console.users.edit');
         
     });
+
+     //api raja ongkir
+     Route::get('/provinces', 'ApiController@getProvinces');
+     Route::get('/cities', 'ApiController@getCities');
+     Route::get('/districts', 'ApiController@getDistricts');
+     Route::post('/shipping', 'ApiController@getShipping');
+     Route::get('/check_voucher', 'ApiController@check_voucher');
+     Route::post('/checkout', 'ApiController@checkout');
+     Route::post('/waybill', 'ApiController@getWaybill');
+
+     //customer register
+
 });
