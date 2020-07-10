@@ -30,7 +30,7 @@ class Status extends Component
                 'status' => $this->status
             ]);
             session()->flash('success','Status Berhasil diupdate');
-            return redirect()->back();
+            return redirect()->route('console.orders.index');
         }
 
     }

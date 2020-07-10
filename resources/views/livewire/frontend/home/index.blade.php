@@ -51,7 +51,7 @@
             $harga_diskon = $product->price - $harga_set;
             @endphp
 
-            <div class="col-6 col-md-3 mb-4">
+            <div class="col-4 col-md-2 mb-4">
                 <div class="card h-100 border-0 shadow rounded-md">
                     <div class="card-img">
                         <img src="{{ Storage::url('public/products/'.$product->image) }}" class="w-100 rounded-t-md"

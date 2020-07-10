@@ -21,6 +21,18 @@ View::composer('*', function($view) {
     $view->with('global_categories', $global_categories);
 });
 
+//api raja ongkir
+Route::get('/provinces', 'ApiController@getProvinces');
+Route::get('/cities', 'ApiController@getCities');
+Route::get('/districts', 'ApiController@getDistricts');
+Route::post('/shipping', 'ApiController@getShipping');
+Route::get('/check_voucher', 'ApiController@check_voucher');
+Route::post('/checkout', 'ApiController@checkout');
+Route::post('/waybill', 'ApiController@getWaybill');
+
+Route::livewire('/payment/{invoice_id}', 'frontend.payment.index')
+->layout('layouts.frontend')->name('frontend.payment.index')->middleware('auth:customer');
+
 Route::group(['middleware' => 'guest'], function () {
 
     Route::livewire('/customer/register', 'customer.auth.register')
@@ -31,6 +43,9 @@ Route::group(['middleware' => 'guest'], function () {
 
     Route::livewire('/customer/logout', 'customer.auth.logout')
     ->layout('layouts.frontend')->name('customer.auth.logout');
+
+    Route::livewire('/cart', 'frontend.cart.index')
+    ->layout('layouts.frontend')->name('frontend.cart.index');
 
     route::livewire('/login','console.login')
     ->layout('layouts.auth')->name('console.login');
@@ -134,14 +149,7 @@ route::prefix('console')->group(function(){
         
     });
 
-     //api raja ongkir
-     Route::get('/provinces', 'ApiController@getProvinces');
-     Route::get('/cities', 'ApiController@getCities');
-     Route::get('/districts', 'ApiController@getDistricts');
-     Route::post('/shipping', 'ApiController@getShipping');
-     Route::get('/check_voucher', 'ApiController@check_voucher');
-     Route::post('/checkout', 'ApiController@checkout');
-     Route::post('/waybill', 'ApiController@getWaybill');
+     
 
      //customer register
 

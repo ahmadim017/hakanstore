@@ -28,7 +28,7 @@ class Receipt extends Component
                 'no_resi' => $this->receipt
             ]);
             session()->flash('success','No Resi Berhasil ditambahkan');
-            return redirect()->back();
+            return redirect()->route('console.orders.index');
         }
     }
     public function render()

@@ -62,7 +62,7 @@ class ApiController extends Controller
             'authorization' => env('RUANGAPI_KEY'),
             'content-type' => 'application/json',
         ])->post('https://ruangapi.com/api/v1/shipping', [
-            'origin'      => 113, //kabupaten demak
+            'origin'      => 354, //kabupaten Penajam Paser Utara
             'destination' => $request->destination,
             'weight'      => $request->weight,
             'courier'     => $request->courier,
@@ -109,7 +109,7 @@ class ApiController extends Controller
         $length = 10;
         $random = '';
         for ($i=0; $i < $length; $i++) { 
-            $random .= rand(0, 1) ? rand(0, 9) : chr(rand('a'), ord('z'));
+            $random .= rand(0, 1) ? rand(0, 9) : chr(rand(ord('a'), ord('z')));
         }
 
         $invoice = 'INVOICE-'.Str::upper($random);
