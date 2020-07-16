@@ -366,10 +366,11 @@
             $('#courier').empty();
             $('#courier').removeClass('d-none');
             $('#courier').append('<div class="form-check form-check-inline">\n' +
-                '  <input class="form-check-input select-courier" type="radio" name="courier" id="ongkos_kirim-jne" value="jne">\n' +
-                '  <label class="form-check-label font-weight-bold mr-2" for="ongkos_kirim-jne">Jalur Nugraha Ekakurir (JNE)</label>\n' +
                 '  <input class="form-check-input select-courier" type="radio" name="courier" id="ongkos_kirim-jnt" value="jnt">\n' +
-                '  <label class="form-check-label font-weight-bold" for="ongkos_kirim-jnt">J&T Express (J&T)</label>\n' +
+                '  <label class="form-check-label font-weight-bold mr-2" for="ongkos_kirim-jnt">J&T Express (J&T)</label>\n' +
+                '  <input class="form-check-input select-courier" type="radio" name="courier" id="ongkos_kirim-tiki" value="tiki">\n' +
+                '  <label class="form-check-label font-weight-bold" for="ongkos_kirim-tiki">Citra Van Titipan Kilat (TIKI)</label>\n' +
+                
                 '</div>')
 
         });

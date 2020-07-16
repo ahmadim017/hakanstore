@@ -70,7 +70,7 @@ class ApiController extends Controller
             'authorization' => env('RUANGAPI_KEY'),
             'content-type' => 'application/json',
         ])->post('https://ruangapi.com/api/v1/shipping', [
-            'origin'      => 113, //kabupaten demak
+            'origin'      => 19, //balikpapan
             'destination' => $request->destination,
             'weight'      => $request->weight,
             'courier'     => $request->courier,

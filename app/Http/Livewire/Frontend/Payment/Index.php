@@ -52,7 +52,7 @@ class Index extends Component
     public function confirmPayment()
     {
         $this->image->store('public/payments');
-
+        
         $payment = PaymentConfirmation::create([
             'customer_id'       => Auth::guard('customer')->user()->id,
             'name'              => $this->name,
@@ -71,6 +71,7 @@ class Index extends Component
         Invoice::where('invoice', $this->invoice_id)->update([
             'status' => 'payment_review'
         ]);
+       
 
         if($payment) {
             session()->flash('success', 'Payment proof confirmation send !');

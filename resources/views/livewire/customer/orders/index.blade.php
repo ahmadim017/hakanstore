@@ -32,18 +32,17 @@
                                     @foreach ($invoices as $no => $invoice)
                                     <tr>
                                         <th scope="row" style="text-align: center">
-                                            {{ ++$no + ($invoices->currentPage()-1) * $invoices->perPage() }}</th>
+                                            {{ $loop->iteration }}</th>
                                         <td>{{ $invoice->invoice }}</td>
                                         <td class="text-right">{{ money_id($invoice->grand_total) }}</td>
                                         <td class="text-center">
                                             @if ($invoice->status == "pending")
-                                            <button class="btn btn-sm btn-danger"><i
-                                                    class="fa fa-circle-notch fa-spin"></i>
+                                            <button class="btn btn-sm btn-danger"><i class="fa fa-circle-notch fa-spin"></i>
                                                 {{ $invoice->status }}</button>
                                             @elseif($invoice->status == "payment_review")
                                             <button class="btn btn-sm btn-warning"><i class="fa fa-spinner fa-spin"></i>
                                                 {{ $invoice->status }}</button>
-                                            @elseif($invoice->status == "ppayment_invalid")
+                                            @elseif($invoice->status == "payment_invalid")
                                             <button class="btn btn-sm btn-danger"><i class="fa fa-times-circle"></i>
                                                 {{ $invoice->status }}</button>
                                             @elseif($invoice->status == "progress")
