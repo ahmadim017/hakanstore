@@ -4,14 +4,12 @@ namespace App\Helpers;
 
 use App\Product;
 
-class Cart 
+class Cart
 {
-
     public function __construct()
     {
-        if ($this->get() === Null) 
+        if($this->get() === null)
             $this->set($this->empty());
-        
     }
 
     public function add(Product $product): void
@@ -45,7 +43,7 @@ class Cart
         return request()->session()->get('cart');
     }
 
-    public function set($cart): void
+    private function set($cart): void
     {
         request()->session()->put('cart', $cart);
     }

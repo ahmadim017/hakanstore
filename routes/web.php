@@ -13,14 +13,6 @@ use Illuminate\Support\Facades\View;
 |
 */
 
-Route::livewire('/', 'frontend.home.index')
-->layout('layouts.frontend')->name('root');
-
-View::composer('*', function($view) {
-    $global_categories = \App\Category::latest()->take(6)->get();
-    $view->with('global_categories', $global_categories);
-});
-
 //api raja ongkir
 Route::get('/provinces', 'ApiController@getProvinces');
 Route::get('/cities', 'ApiController@getCities');
@@ -30,8 +22,27 @@ Route::get('/check_voucher', 'ApiController@check_voucher');
 Route::post('/checkout', 'ApiController@checkout');
 Route::post('/waybill', 'ApiController@getWaybill');
 
+Route::livewire('/', 'frontend.home.index')
+->layout('layouts.frontend')->name('root');
+
+View::composer('*', function($view) {
+    $global_categories = \App\Category::latest()->take(6)->get();
+    $view->with('global_categories', $global_categories);
+});
+
+
+
 Route::livewire('/payment/{invoice_id}', 'frontend.payment.index')
 ->layout('layouts.frontend')->name('frontend.payment.index')->middleware('auth:customer');
+
+route::livewire('/category/{slug}','frontend.category.show')
+->layout('layouts.frontend')->name('frontend.category.show');
+
+route::livewire('/search','frontend.search.index')
+->layout('layouts.frontend')->name('frontend.search.index');
+
+route::livewire('/detail/{id}','frontend.home.show')
+->layout('layouts.frontend')->name('frontend.home.show');
 
 Route::group(['middleware' => 'guest'], function () {
 

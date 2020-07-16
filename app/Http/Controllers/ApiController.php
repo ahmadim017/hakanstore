@@ -2,25 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Invoice;
 use App\Voucher;
 use App\Facades\Cart;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 class ApiController extends Controller
 {
+    /**
+     * get provinces
+     */
     public function getProvinces()
     {
         $response = Http::withHeaders([
             'accept' => 'application/json',
             'authorization' => env('RUANGAPI_KEY'),
-            'content_type' => 'application/json',
+            'content-type' => 'application/json',
         ])->get('https://ruangapi.com/api/v1/provinces');
+
+
         return $response;
     }
 
+    /**
+     * get cities
+     */
     public function getCities(Request $request)
     {
         $response = Http::withHeaders([
@@ -62,7 +70,7 @@ class ApiController extends Controller
             'authorization' => env('RUANGAPI_KEY'),
             'content-type' => 'application/json',
         ])->post('https://ruangapi.com/api/v1/shipping', [
-            'origin'      => 354, //kabupaten Penajam Paser Utara
+            'origin'      => 113, //kabupaten demak
             'destination' => $request->destination,
             'weight'      => $request->weight,
             'courier'     => $request->courier,
@@ -89,26 +97,38 @@ class ApiController extends Controller
         return $response;
     }
 
+    /**
+     * check voucher
+     */
     public function check_voucher(Request $request)
     {
         $voucher = Voucher::where('voucher', $request->voucher)->first();
-        if ($voucher) {
+        if($voucher) {
             return response()->json([
-                'success' => true,
-                'data' => $voucher,
+                'success'=> true,
+                'data'   => $voucher,
             ], 200);
         } else {
             return response()->json([
-                'success' => false,
+                'success'=> false,
             ], 200);
         }
+
     }
 
+    /**
+     * checkout
+     */
     public function checkout(Request $request)
     {
+
+        //create invoice
+        /**
+         * algorithm create no invoice
+         */
         $length = 10;
         $random = '';
-        for ($i=0; $i < $length; $i++) { 
+        for ($i = 0; $i < $length; $i++) {
             $random .= rand(0, 1) ? rand(0, 9) : chr(rand(ord('a'), ord('z')));
         }
 
@@ -130,30 +150,33 @@ class ApiController extends Controller
             'note'          => $request->note,
             'grand_total'   => $request->grand_total + rand(10,99),
             'status'        => 'pending'
-
         ]);
 
-        foreach(Cart::get()['products'] as $cart){
+        //insert product order
+        foreach (Cart::get()['products'] as $cart) {
+            
             $harga_set = $cart->price * $cart->discount / 100;
             $harga_diskon = $cart->price - $harga_set;
 
-            $data_invoice->order->create([
-                'invoice' => $invoice,
-                'product_id' => $cart->id,
-                'product_name' => $cart->tittle,
-                'image' => $cart->image,
-                'unit' => $cart->unit,
-                'unit_weight' => $cart->unit_weight,
-                'price' => $harga_diskon,
+            $data_invoice->order()->create([
+                'invoice'       => $invoice,
+                'product_id'    => $cart->id,
+                'product_name'  => $cart->tittle,
+                'image'         => $cart->image,
+                'unit'          => $cart->unit,
+                'unit_weight'   => $cart->unit_weight,
+                'price'         => $harga_diskon,
             ]);
 
         }
 
+        //clear cart
         Cart::clear();
 
         return response()->json([
-            'success' => true,
-            'data' => $data_invoice,
-        ], 200);
+            'success'=> true,
+            'data'   => $data_invoice,
+        ], 201);
     }
+
 }

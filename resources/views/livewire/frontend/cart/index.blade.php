@@ -37,7 +37,7 @@
                                                 <td style="padding: .20rem">{{ money_id($harga_diskon) }}</td>
                                             </tr>
                                             <tr>
-                                                <td style="padding: .20rem">Berat</td>
+                                                <td style="padding: .20rem">QTY</td>
                                                 <td style="padding: .20rem">:</td>
                                                 <td style="padding: .20rem"><b>{{ $product->unit_weight }}
                                                         {{ $product->unit }}</b></td>
@@ -87,7 +87,7 @@
                                 </tr>
                                 <tr>
                                     <td class="set-td text-left border-0">
-                                        <p class="m-0">SHIPPING (<strong>{{ $weight }}</strong> {{ $product->unit }})</p>
+                                        <p class="m-0">SHIPPING (<strong>{{ $weight }}</strong> gr)</p>
                                     </td>
                                     <td class="set-td border-0 text-right">&nbsp; : Rp.</td>
                                     <td class="set-td border-0 text-right">
@@ -218,551 +218,555 @@
 </div>
 <script>
     $(document).ready(function () {
-        $(".select-provinsi, .select-kota, .select-kecamatan").select2({
-            thema: 'bootsrap4',
+        $(".select-provinsi , .select-kota, .select-kecamatan").select2({
+            theme: 'bootstrap4',
             width: 'style',
         });
     });
 
     $(document).ready(function () {
-        
-        let grandTotal = "{{$totalPrice}}";
+
+        let grandTotal = "{{ $totalPrice }}";
         let diskon = parseInt($('#diskon-hidden').text()) || 0;
 
         $('#grand-total').html(money_id(parseInt(grandTotal) - parseInt(diskon)));
-        $('#grand_total-hidden').html(money_id(parseInt(grandTotal) - parseInt(diskon)));
+        $('#grand-total-hidden').html(parseInt(grandTotal) - parseInt(diskon));
+
+
     });
 
-    function money_id(angka)
-    {
+    function money_id(angka) {
         let reverse = angka.toString().split('').reverse().join(''),
             ribuan = reverse.match(/\d{1,3}/g);
-            ribuan = ribuan.join('.').split('').reverse().join('');
-            return ribuan;
+        ribuan = ribuan.join('.').split('').reverse().join('');
+        return ribuan;
     }
 
-    $(document).ready(function (){
+    //getProvince on windows loaded
+    $(document).ready(function () {
         jQuery.ajax({
-            url : '/provinces',
-            type : "GET",
-            dataType : 'json',
-            success: function (response){
+            url: '/provinces',
+            type: "GET",
+            dataType: "json",
+            success: function (response) {
                 $.each(response.data.results, function (key, value) {
-                    $('select[name ="provinsi"]').append('<option value="' + value.id +'">' + value.name +'</option>');
+                    $('select[name="provinsi"]').append('<option value="' + value.id +
+                        '">' + value.name + '</option>');
                 });
             },
         });
     });
+
 
     $(document).ready(function () {
 
-$('select[name="provinsi"]').on('change', function () {
+        $('select[name="provinsi"]').on('change', function () {
 
-    //clear ongkir
-    $('#ongkir-cart').html(0);
-    $('#ongkir-cart-hidden').html(0);
-    $('#ongkir-service-hidden').html(0);
+            //clear ongkir
+            $('#ongkir-cart').html(0);
+            $('#ongkir-cart-hidden').html(0);
+            $('#ongkir-service-hidden').html(0);
 
-    //hide ongkir
-    $('#ongkir').addClass('d-none');
+            //hide ongkir
+            $('#ongkir').addClass('d-none');
 
-    //set grand total ke default
-    let grandTotal = "{{ $totalPrice }}";
-    let diskon = parseInt($('#diskon-hidden').text()) || 0;
+            //set grand total ke default
+            let grandTotal = "{{ $totalPrice }}";
+            let diskon = parseInt($('#diskon-hidden').text()) || 0;
 
-    $('#grand-total').html(money_id(parseInt(grandTotal) - parseInt(diskon)));
-    $('#grand-total-hidden').html(parseInt(grandTotal) - parseInt(diskon));
+            $('#grand-total').html(money_id(parseInt(grandTotal) - parseInt(diskon)));
+            $('#grand-total-hidden').html(parseInt(grandTotal) - parseInt(diskon));
 
-    let provinceId = $(this).val();
-    if (provinceId) {
-        jQuery.ajax({
-            url: '/cities',
-            type: "GET",
-            dataType: "json",
-            data: {
-                province: provinceId
-            },
-            success: function (response) {
-                $('select[name="kota"]').empty();
-                $('select[name="kota"]').append(
-                    '<option value="">-- pilih kota --</option>');
-                $('select[name="kecamatan"]').empty();
-                $('select[name="kecamatan"]').append(
-                    '<option value="">-- pilih kecamatan --</option>');
-                $.each(response.data.results, function (key, value) {
-                    $('select[name="kota"]').append('<option value="' +
-                        value.id + '">' + value.name + '</option>');
+            let provinceId = $(this).val();
+            if (provinceId) {
+                jQuery.ajax({
+                    url: '/cities',
+                    type: "GET",
+                    dataType: "json",
+                    data: {
+                        province: provinceId
+                    },
+                    success: function (response) {
+                        $('select[name="kota"]').empty();
+                        $('select[name="kota"]').append(
+                            '<option value="">-- pilih kota --</option>');
+                        $('select[name="kecamatan"]').empty();
+                        $('select[name="kecamatan"]').append(
+                            '<option value="">-- pilih kecamatan --</option>');
+                        $.each(response.data.results, function (key, value) {
+                            $('select[name="kota"]').append('<option value="' +
+                                value.id + '">' + value.name + '</option>');
+                        });
+                    },
                 });
-            },
+            } else {
+                $('select[name="kota"]').append('<option value="">-- pilih kota --</option>');
+            }
         });
-    } else {
-        $('select[name="kota"]').append('<option value="">-- pilih kota --</option>');
-    }
-});
 
-$('select[name="kota"]').on('change', function () {
+        $('select[name="kota"]').on('change', function () {
 
-    //clear ongkir
-    $('#ongkir-cart').html(0);
-    $('#ongkir-cart-hidden').html(0);
-    $('#ongkir-service-hidden').html(0);
+            //clear ongkir
+            $('#ongkir-cart').html(0);
+            $('#ongkir-cart-hidden').html(0);
+            $('#ongkir-service-hidden').html(0);
 
-    //hide ongkir
-    $('#ongkir').addClass('d-none');
+            //hide ongkir
+            $('#ongkir').addClass('d-none');
 
-    //set grand total ke default
-    let grandTotal = "{{ $totalPrice }}";
-    let diskon = parseInt($('#diskon-hidden').text()) || 0;
+            //set grand total ke default
+            let grandTotal = "{{ $totalPrice }}";
+            let diskon = parseInt($('#diskon-hidden').text()) || 0;
 
-    $('#grand-total').html(money_id(parseInt(grandTotal) - parseInt(diskon)));
-    $('#grand-total-hidden').html(parseInt(grandTotal) - parseInt(diskon));
+            $('#grand-total').html(money_id(parseInt(grandTotal) - parseInt(diskon)));
+            $('#grand-total-hidden').html(parseInt(grandTotal) - parseInt(diskon));
 
-    let cityId = $(this).val();
-    if (cityId) {
-        jQuery.ajax({
-            url: '/districts',
-            type: "GET",
-            dataType: "json",
-            data: {
-                city: cityId
-            },
-            success: function (response) {
-                $('select[name="kecamatan"]').empty();
-                $('select[name="kecamatan"]').append(
-                    '<option value="">-- pilih kecamatan --</option>');
-                $.each(response.data.results, function (key, value) {
-                    $('select[name="kecamatan"]').append('<option value="' +
-                        value.id + '">' + value.name + '</option>');
+            let cityId = $(this).val();
+            if (cityId) {
+                jQuery.ajax({
+                    url: '/districts',
+                    type: "GET",
+                    dataType: "json",
+                    data: {
+                        city: cityId
+                    },
+                    success: function (response) {
+                        $('select[name="kecamatan"]').empty();
+                        $('select[name="kecamatan"]').append(
+                            '<option value="">-- pilih kecamatan --</option>');
+                        $.each(response.data.results, function (key, value) {
+                            $('select[name="kecamatan"]').append('<option value="' +
+                                value.id + '">' + value.name + '</option>');
+                        });
+                    },
                 });
-            },
-        });
-    } else {
-        $('select[name="kecamatan"]').append('<option value="">-- pilih kecamatan --</option>');
-    }
-
-});
-
-$('select[name="kecamatan"]').on('change', function () {
-
-    //clear ongkir
-    $('#ongkir-cart').html(0);
-    $('#ongkir-cart-hidden').html(0);
-    $('#ongkir-service-hidden').html(0);
-
-    //hide ongkir
-    $('#ongkir').addClass('d-none');
-
-    //set grand total ke default
-    let grandTotal = "{{ $totalPrice }}";
-    let diskon = parseInt($('#diskon-hidden').text()) || 0;
-
-    $('#grand-total').html(money_id(parseInt(grandTotal) - parseInt(diskon)));
-    $('#grand-total-hidden').html(parseInt(grandTotal) - parseInt(diskon));
-
-    $('#courier').empty();
-    $('#courier').removeClass('d-none');
-    $('#courier').append('<div class="form-check form-check-inline">\n' +
-        '  <input class="form-check-input select-courier" type="radio" name="courier" id="ongkos_kirim-jne" value="jne">\n' +
-        '  <label class="form-check-label font-weight-bold mr-2" for="ongkos_kirim-jne">Jalur Nugraha Ekakurir (JNE)</label>\n' +
-        '  <input class="form-check-input select-courier" type="radio" name="courier" id="ongkos_kirim-jnt" value="jnt">\n' +
-        '  <label class="form-check-label font-weight-bold" for="ongkos_kirim-jnt">J&T Express (J&T)</label>\n' +
-        '</div>')
-
-});
-
-//ongkir change
-$(document).delegate(".select-courier", "change", function () {
-
-    //clear ongkir
-    $('#ongkir-cart').html(0);
-    $('#ongkir-cart-hidden').html(0);
-    $('#ongkir-service-hidden').html(0);
-
-    //hide ongkir
-    $('#ongkir').addClass('d-none');
-
-    //set grand total ke default
-    let grandTotal = "{{ $totalPrice }}";
-    let diskon = parseInt($('#diskon-hidden').text()) || 0;
-
-    $('#grand-total').html(money_id(parseInt(grandTotal) - parseInt(diskon)));
-    $('#grand-total-hidden').html(parseInt(grandTotal) - parseInt(diskon));
-
-    //cek ongkir
-    let token = $("meta[name='csrf-token']").attr("content");
-    let courier = $('.select-courier:checked').val();
-    let destination = $('select[name=kecamatan]').val();
-    let weight = "{{ $weight }}";
-
-    if (courier) {
-        jQuery.ajax({
-            url: '/shipping',
-            type: "POST",
-            dataType: "json",
-            data: {
-                _token: token,
-                courier: courier,
-                destination: destination,
-                weight: weight
-            },
-            success: function (response) {
-
-                $('#ongkir').empty();
-                console.log(response);
-                $.each(response.data.results, function (key, value) {
-                    $('#ongkir').removeClass('d-none');
-                    $('#ongkir').append(
-                        '<div class="form-check form-check-inline">\n' +
-                        '  <input class="form-check-input ongkos_kirim" type="radio" name="ongkos_kirim" id="ongkos_kirim-' +
-                        value.service + '" value="' + courier
-                        .toUpperCase() + ' | ' + value.service + ' | ' +
-                        value.cost + ' | ' + value.estimate + '">\n' +
-                        '  <span class="form-check-label" for="ongkos_kirim-' +
-                        value.service + '"> ' + courier.toUpperCase() +
-                        ' : <strong>' + value.service +
-                        '</strong> - Rp. ' + money_id(value.cost) +
-                        ' (' + value.estimate + ' hari)</span>\n' +
-                        '</div>')
-                });
-            },
-        });
-    } else {
-
-    }
-
-});
-
-});
-
-$(document).ready(function () {
-
-//ongkir change
-$(document).delegate(".ongkos_kirim", "change", function () {
-
-    let rajaongkir = $(".ongkos_kirim:checked").val().split("|");
-
-    $('#ongkir-cart').html(money_id(rajaongkir[2]));
-    $('#ongkir-cart-hidden').html(rajaongkir[2]);
-    $('#ongkir-service-hidden').html(rajaongkir[1]);
-
-    //grand total
-    let jumlah = "{{ $totalPrice }}";
-    let ongkir = rajaongkir[2];
-    let diskon = parseInt($('#diskon-hidden').text()) || 0;
-    let grandTotal = parseInt(jumlah) + parseInt(ongkir) - parseInt(diskon);
-
-    $('#grand-total').html(money_id(grandTotal));
-    $('#grand-total-hidden').html(grandTotal);
-
-});
-
-});
-
-
-//cek voucher promo
-$(document).ready(function () {
-
-$(document).delegate(".btn-voucher", "click", function () {
-    let rules = $(this).data('rules');
-
-    if (rules == 'add') {
-
-        let token = $("meta[name='csrf-token']").attr("content");
-        let voucher = $('#voucher').val();
-        let grand_total = $('#grand-total-hidden').text();
-
-        //add disable and loding button
-        $('.btn-voucher').attr('disabled', 'disabled');
-        $('.btn-voucher').html(
-            '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>\n' +
-            '  Loading...');
-
-        if (voucher.length == "") {
-
-            toastr.error('Masukkan Kode Voucher !');
-
-            //auto focus set
-            $('#voucher').focus();
-
-            //add disable and loding button
-            $('.btn-voucher').removeAttr('disabled', 'disabled');
-            $('.btn-voucher').html('VALIDASI');
-
-        } else {
-
-            $.ajax({
-                url: "/check_voucher",
-                data: {
-                    _token: token,
-                    voucher: voucher
-                },
-                type: "GET",
-                dataType: "json",
-                success: function (response) {
-                    if (response.success) {
-
-                        if (parseInt(grand_total) < response.data
-                            .total_minimal_shopping) {
-
-                            toastr.error('Total Belanja Minimal' + money_id(response
-                                .data.total_minimal_shopping));
-
-                            //auto focus set
-                            $('#voucher').focus();
-
-                            let btn_voucher = $(".btn-voucher");
-                            btn_voucher.text('VALIDASI');
-                            btn_voucher.removeAttr('disabled', 'disabled');
-
-                        } else if (parseInt(grand_total) == response.data
-                            .total_minimal_shopping || parseInt(grand_total) >
-                            response.data.total_minimal_shopping) {
-
-                            toastr.success('Kode Voucher ' + response.data
-                                .voucher + ' Berhasil Ditambahkan !');
-
-                            //add diskon to html
-                            $('#diskon').html(money_id(response.data
-                                .nominal_voucher));
-                            $('#diskon-hidden').html(response.data.nominal_voucher);
-
-                            //manipulate grand total
-                            $('#grand-total').html(money_id(parseInt(grand_total) -
-                                parseInt(response.data.nominal_voucher)));
-                            $('#grand-total-hidden').html(parseInt(grand_total) -
-                                parseInt(response.data.nominal_voucher));
-
-
-                            let btn_voucher = $(".btn-voucher");
-                            btn_voucher.text('HAPUS');
-                            btn_voucher.removeAttr('disabled', 'disabled')
-                                .removeClass("btn-primary").addClass("btn-danger")
-                                .data('rules', 'delete');
-
-                        } else {
-
-                            toastr.error('Internal Server Error !');
-
-                            let btn_voucher = $(".btn-voucher");
-                            btn_voucher.text('VALIDASI');
-                            btn_voucher.removeAttr('disabled', 'disabled');
-
-                        }
-
-                    } else {
-
-                        toastr.error('Kode Voucher Tidak Valid !');
-
-                        let btn_voucher = $(".btn-voucher");
-                        btn_voucher.text('VALIDASI');
-                        btn_voucher.removeAttr('disabled', 'disabled');
-
-                    }
-                }
-            });
-
-        }
-
-    } else if (rules == 'delete') {
-
-        //grand total
-        let diskon = $('#diskon-hidden').text();
-        let grand_total = parseInt($('#grand-total-hidden').text()) + parseInt(diskon);
-
-        $('#grand-total').text(money_id(grand_total));
-        $('#grand-total-hidden').text(grand_total);
-
-        //make button normal validasi
-        let btn_voucher = $(".btn-voucher");
-        btn_voucher.text('VALIDASI');
-        btn_voucher.removeAttr('disabled', 'disabled').removeClass("btn-danger").addClass(
-            "btn-primary").data('rules', 'add');
-
-        // remove voucher and make auto focus
-        $('#voucher').val('');
-        $('#voucher').focus();
-
-        //remove diskon
-        $('#diskon').text('0');
-        $('#diskon-hidden').text('0');
-
-    }
-
-});
-});
-
-//checkout
-$(document).ready(function () {
-
-let isProcessing = false;
-
-$('.btn-checkout').click(function (e) {
-    e.preventDefault();
-
-    //add disable and loding button
-    $('.btn-checkout').attr('disabled', 'disabled');
-    $('.btn-checkout').html(
-        '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>\n' +
-        '  Loading...');
-
-    let token = $("meta[name='csrf-token']").attr("content");
-    //credential
-    let name = $('#nama_lengkap').val();
-    let phone = $('#phone').val();
-    let province = $('select[name=provinsi]').val();
-    let city = $('select[name=kota]').val();
-    let district = $('select[name=kecamatan]').val();
-    let address = $('textarea#alamat').val();
-    let note = $('textarea#catatan').val();
-    //ongkir
-    let courier = $('.select-courier:checked').val();
-    let service = $('#ongkir-service-hidden').text();
-    let weight = "{{ $weight }}";
-    let cost = $('#ongkir-cart-hidden').text();
-    //grand total
-    let grand_total = $('#grand-total-hidden').text();
-
-    if (name.length == "") {
-
-        toastr.error('Silahkan Masukkan Nama Lengkap !');
-
-        $('#nama_lengkap').focus();
-        //add disable and loding button
-        $('.btn-checkout').removeAttr('disabled', 'disabled');
-        $('.btn-checkout').html('CHECKOUT');
-
-    } else if (phone.length == "") {
-
-        toastr.error('Silahkan Masukkan No. Telp / WA !');
-
-        $('#phone').focus();
-        //add disable and loding button
-        $('.btn-checkout').removeAttr('disabled', 'disabled');
-        $('.btn-checkout').html('CHECKOUT');
-
-    } else if (province.length == "") {
-
-        toastr.error('Silahkan Pilih Provinsi !');
-
-        $('select[name=provinsi]').focus();
-        //add disable and loding button
-        $('.btn-checkout').removeAttr('disabled', 'disabled');
-        $('.btn-checkout').html('CHECKOUT');
-
-    } else if (city.length == "") {
-
-        toastr.error('Silahkan Pilih Kota / Kabupaten !');
-
-        $('select[name=kota]').focus();
-        //add disable and loding button
-        $('.btn-checkout').removeAttr('disabled', 'disabled');
-        $('.btn-checkout').html('CHECKOUT');
-
-    } else if (district.length == "") {
-
-        toastr.error('Silahkan Pilih Kecamatan !');
-
-        $('select[name=kecamatan]').focus();
-        //add disable and loding button
-        $('.btn-checkout').removeAttr('disabled', 'disabled');
-        $('.btn-checkout').html('CHECKOUT');
-
-    } else if (address.length == "") {
-
-        toastr.error('Silahkan Masukkan Alamat Lengkap !');
-
-        $('textarea#alamat').focus();
-        //add disable and loding button
-        $('.btn-checkout').removeAttr('disabled', 'disabled');
-        $('.btn-checkout').html('CHECKOUT');
-
-    } else if (courier.length == "") {
-
-        toastr.error('Silahkan Pilih Kurir Pengiriman !');
-
-        //add disable and loding button
-        $('.btn-checkout').removeAttr('disabled', 'disabled');
-        $('.btn-checkout').html('CHECKOUT');
-
-    } else if (service == 0) {
-
-        toastr.error('Silahkan Pilih Layanan Kurir !');
-
-        //add disable and loding button
-        $('.btn-checkout').removeAttr('disabled', 'disabled');
-        $('.btn-checkout').html('CHECKOUT');
-
-    } else if (weight.length == "") {
-
-        toastr.error('Berat Belanja Kosong !');
-
-        //add disable and loding button
-        $('.btn-checkout').removeAttr('disabled', 'disabled');
-        $('.btn-checkout').html('CHECKOUT');
-
-    } else if (cost == 0) {
-
-        toastr.error('Biaya Pengiriman Kosong !');
-
-        //add disable and loding button
-        $('.btn-checkout').removeAttr('disabled', 'disabled');
-        $('.btn-checkout').html('CHECKOUT');
-
-    } else if (grand_total.length == "") {
-
-        toastr.error('Grand Total Kosong !');
-
-        //add disable and loding button
-        $('.btn-checkout').removeAttr('disabled', 'disabled');
-        $('.btn-checkout').html('CHECKOUT');
-
-    } else {
-
-        if (isProcessing) {
-            return;
-        }
-
-        isProcessing = true;
-        $.ajax({
-            url: "/checkout",
-            data: {
-                _token: token,
-                name: name,
-                phone: phone,
-                province: province,
-                city: city,
-                district: district,
-                address: address,
-                note: note,
-                courier: courier,
-                service: service,
-                weight: weight,
-                cost: cost,
-                grand_total: grand_total
-            },
-            dataType: "JSON",
-            type: "POST",
-            success: function (response) {
-                isProcessing = false;
-                if (response.success) {
-
-
-                    //add disable and loding button
-                    $('.btn-checkout').removeAttr('disabled', 'disabled');
-                    $('.btn-checkout').html('CHECKOUT');
-
-
-                    Turbolinks.visit('payment/'+response.data.invoice)
-                }
-            },
-            error: function (response) {
-                console.log(response);
+            } else {
+                $('select[name="kecamatan"]').append('<option value="">-- pilih kecamatan --</option>');
             }
 
         });
 
-    }
+        $('select[name="kecamatan"]').on('change', function () {
 
-});
-});
+            //clear ongkir
+            $('#ongkir-cart').html(0);
+            $('#ongkir-cart-hidden').html(0);
+            $('#ongkir-service-hidden').html(0);
+
+            //hide ongkir
+            $('#ongkir').addClass('d-none');
+
+            //set grand total ke default
+            let grandTotal = "{{ $totalPrice }}";
+            let diskon = parseInt($('#diskon-hidden').text()) || 0;
+
+            $('#grand-total').html(money_id(parseInt(grandTotal) - parseInt(diskon)));
+            $('#grand-total-hidden').html(parseInt(grandTotal) - parseInt(diskon));
+
+            $('#courier').empty();
+            $('#courier').removeClass('d-none');
+            $('#courier').append('<div class="form-check form-check-inline">\n' +
+                '  <input class="form-check-input select-courier" type="radio" name="courier" id="ongkos_kirim-jne" value="jne">\n' +
+                '  <label class="form-check-label font-weight-bold mr-2" for="ongkos_kirim-jne">Jalur Nugraha Ekakurir (JNE)</label>\n' +
+                '  <input class="form-check-input select-courier" type="radio" name="courier" id="ongkos_kirim-jnt" value="jnt">\n' +
+                '  <label class="form-check-label font-weight-bold" for="ongkos_kirim-jnt">J&T Express (J&T)</label>\n' +
+                '</div>')
+
+        });
+
+        //ongkir change
+        $(document).delegate(".select-courier", "change", function () {
+
+            //clear ongkir
+            $('#ongkir-cart').html(0);
+            $('#ongkir-cart-hidden').html(0);
+            $('#ongkir-service-hidden').html(0);
+
+            //hide ongkir
+            $('#ongkir').addClass('d-none');
+
+            //set grand total ke default
+            let grandTotal = "{{ $totalPrice }}";
+            let diskon = parseInt($('#diskon-hidden').text()) || 0;
+
+            $('#grand-total').html(money_id(parseInt(grandTotal) - parseInt(diskon)));
+            $('#grand-total-hidden').html(parseInt(grandTotal) - parseInt(diskon));
+
+            //cek ongkir
+            let token = $("meta[name='csrf-token']").attr("content");
+            let courier = $('.select-courier:checked').val();
+            let destination = $('select[name=kecamatan]').val();
+            let weight = "{{ $weight }}";
+
+            if (courier) {
+                jQuery.ajax({
+                    url: '/shipping',
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        _token: token,
+                        courier: courier,
+                        destination: destination,
+                        weight: weight
+                    },
+                    success: function (response) {
+
+                        $('#ongkir').empty();
+                        console.log(response);
+                        $.each(response.data.results, function (key, value) {
+                            $('#ongkir').removeClass('d-none');
+                            $('#ongkir').append(
+                                '<div class="form-check form-check-inline">\n' +
+                                '  <input class="form-check-input ongkos_kirim" type="radio" name="ongkos_kirim" id="ongkos_kirim-' +
+                                value.service + '" value="' + courier
+                                .toUpperCase() + ' | ' + value.service + ' | ' +
+                                value.cost + ' | ' + value.estimate + '">\n' +
+                                '  <span class="form-check-label" for="ongkos_kirim-' +
+                                value.service + '"> ' + courier.toUpperCase() +
+                                ' : <strong>' + value.service +
+                                '</strong> - Rp. ' + money_id(value.cost) +
+                                ' (' + value.estimate + ' hari)</span>\n' +
+                                '</div>')
+                        });
+                    },
+                });
+            } else {
+
+            }
+
+        });
+
+    });
+
+    $(document).ready(function () {
+
+        //ongkir change
+        $(document).delegate(".ongkos_kirim", "change", function () {
+
+            let rajaongkir = $(".ongkos_kirim:checked").val().split("|");
+
+            $('#ongkir-cart').html(money_id(rajaongkir[2]));
+            $('#ongkir-cart-hidden').html(rajaongkir[2]);
+            $('#ongkir-service-hidden').html(rajaongkir[1]);
+
+            //grand total
+            let jumlah = "{{ $totalPrice }}";
+            let ongkir = rajaongkir[2];
+            let diskon = parseInt($('#diskon-hidden').text()) || 0;
+            let grandTotal = parseInt(jumlah) + parseInt(ongkir) - parseInt(diskon);
+
+            $('#grand-total').html(money_id(grandTotal));
+            $('#grand-total-hidden').html(grandTotal);
+
+        });
+
+    });
+
+
+    //cek voucher promo
+    $(document).ready(function () {
+
+        $(document).delegate(".btn-voucher", "click", function () {
+            let rules = $(this).data('rules');
+
+            if (rules == 'add') {
+
+                let token = $("meta[name='csrf-token']").attr("content");
+                let voucher = $('#voucher').val();
+                let grand_total = $('#grand-total-hidden').text();
+
+                //add disable and loding button
+                $('.btn-voucher').attr('disabled', 'disabled');
+                $('.btn-voucher').html(
+                    '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>\n' +
+                    '  Loading...');
+
+                if (voucher.length == "") {
+
+                    toastr.error('Masukkan Kode Voucher !');
+
+                    //auto focus set
+                    $('#voucher').focus();
+
+                    //add disable and loding button
+                    $('.btn-voucher').removeAttr('disabled', 'disabled');
+                    $('.btn-voucher').html('VALIDASI');
+
+                } else {
+
+                    $.ajax({
+                        url: "/check_voucher",
+                        data: {
+                            _token: token,
+                            voucher: voucher
+                        },
+                        type: "GET",
+                        dataType: "json",
+                        success: function (response) {
+                            if (response.success) {
+
+                                if (parseInt(grand_total) < response.data
+                                    .total_minimal_shopping) {
+
+                                    toastr.error('Total Belanja Minimal' + money_id(response
+                                        .data.total_minimal_shopping));
+
+                                    //auto focus set
+                                    $('#voucher').focus();
+
+                                    let btn_voucher = $(".btn-voucher");
+                                    btn_voucher.text('VALIDASI');
+                                    btn_voucher.removeAttr('disabled', 'disabled');
+
+                                } else if (parseInt(grand_total) == response.data
+                                    .total_minimal_shopping || parseInt(grand_total) >
+                                    response.data.total_minimal_shopping) {
+
+                                    toastr.success('Kode Voucher ' + response.data
+                                        .voucher + ' Berhasil Ditambahkan !');
+
+                                    //add diskon to html
+                                    $('#diskon').html(money_id(response.data
+                                        .nominal_voucher));
+                                    $('#diskon-hidden').html(response.data.nominal_voucher);
+
+                                    //manipulate grand total
+                                    $('#grand-total').html(money_id(parseInt(grand_total) -
+                                        parseInt(response.data.nominal_voucher)));
+                                    $('#grand-total-hidden').html(parseInt(grand_total) -
+                                        parseInt(response.data.nominal_voucher));
+
+
+                                    let btn_voucher = $(".btn-voucher");
+                                    btn_voucher.text('HAPUS');
+                                    btn_voucher.removeAttr('disabled', 'disabled')
+                                        .removeClass("btn-primary").addClass("btn-danger")
+                                        .data('rules', 'delete');
+
+                                } else {
+
+                                    toastr.error('Internal Server Error !');
+
+                                    let btn_voucher = $(".btn-voucher");
+                                    btn_voucher.text('VALIDASI');
+                                    btn_voucher.removeAttr('disabled', 'disabled');
+
+                                }
+
+                            } else {
+
+                                toastr.error('Kode Voucher Tidak Valid !');
+
+                                let btn_voucher = $(".btn-voucher");
+                                btn_voucher.text('VALIDASI');
+                                btn_voucher.removeAttr('disabled', 'disabled');
+
+                            }
+                        }
+                    });
+
+                }
+
+            } else if (rules == 'delete') {
+
+                //grand total
+                let diskon = $('#diskon-hidden').text();
+                let grand_total = parseInt($('#grand-total-hidden').text()) + parseInt(diskon);
+
+                $('#grand-total').text(money_id(grand_total));
+                $('#grand-total-hidden').text(grand_total);
+
+                //make button normal validasi
+                let btn_voucher = $(".btn-voucher");
+                btn_voucher.text('VALIDASI');
+                btn_voucher.removeAttr('disabled', 'disabled').removeClass("btn-danger").addClass(
+                    "btn-primary").data('rules', 'add');
+
+                // remove voucher and make auto focus
+                $('#voucher').val('');
+                $('#voucher').focus();
+
+                //remove diskon
+                $('#diskon').text('0');
+                $('#diskon-hidden').text('0');
+
+            }
+
+        });
+    });
+
+    //checkout
+    $(document).ready(function () {
+
+        let isProcessing = false;
+
+        $('.btn-checkout').click(function (e) {
+            e.preventDefault();
+
+            //add disable and loding button
+            $('.btn-checkout').attr('disabled', 'disabled');
+            $('.btn-checkout').html(
+                '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>\n' +
+                '  Loading...');
+
+            let token = $("meta[name='csrf-token']").attr("content");
+            //credential
+            let name = $('#nama_lengkap').val();
+            let phone = $('#phone').val();
+            let province = $('select[name=provinsi]').val();
+            let city = $('select[name=kota]').val();
+            let district = $('select[name=kecamatan]').val();
+            let address = $('textarea#alamat').val();
+            let note = $('textarea#catatan').val();
+            //ongkir
+            let courier = $('.select-courier:checked').val();
+            let service = $('#ongkir-service-hidden').text();
+            let weight = "{{ $weight }}";
+            let cost = $('#ongkir-cart-hidden').text();
+            //grand total
+            let grand_total = $('#grand-total-hidden').text();
+
+            if (name.length == "") {
+
+                toastr.error('Silahkan Masukkan Nama Lengkap !');
+
+                $('#nama_lengkap').focus();
+                //add disable and loding button
+                $('.btn-checkout').removeAttr('disabled', 'disabled');
+                $('.btn-checkout').html('CHECKOUT');
+
+            } else if (phone.length == "") {
+
+                toastr.error('Silahkan Masukkan No. Telp / WA !');
+
+                $('#phone').focus();
+                //add disable and loding button
+                $('.btn-checkout').removeAttr('disabled', 'disabled');
+                $('.btn-checkout').html('CHECKOUT');
+
+            } else if (province.length == "") {
+
+                toastr.error('Silahkan Pilih Provinsi !');
+
+                $('select[name=provinsi]').focus();
+                //add disable and loding button
+                $('.btn-checkout').removeAttr('disabled', 'disabled');
+                $('.btn-checkout').html('CHECKOUT');
+
+            } else if (city.length == "") {
+
+                toastr.error('Silahkan Pilih Kota / Kabupaten !');
+
+                $('select[name=kota]').focus();
+                //add disable and loding button
+                $('.btn-checkout').removeAttr('disabled', 'disabled');
+                $('.btn-checkout').html('CHECKOUT');
+
+            } else if (district.length == "") {
+
+                toastr.error('Silahkan Pilih Kecamatan !');
+
+                $('select[name=kecamatan]').focus();
+                //add disable and loding button
+                $('.btn-checkout').removeAttr('disabled', 'disabled');
+                $('.btn-checkout').html('CHECKOUT');
+
+            } else if (address.length == "") {
+
+                toastr.error('Silahkan Masukkan Alamat Lengkap !');
+
+                $('textarea#alamat').focus();
+                //add disable and loding button
+                $('.btn-checkout').removeAttr('disabled', 'disabled');
+                $('.btn-checkout').html('CHECKOUT');
+
+            } else if (courier.length == "") {
+
+                toastr.error('Silahkan Pilih Kurir Pengiriman !');
+
+                //add disable and loding button
+                $('.btn-checkout').removeAttr('disabled', 'disabled');
+                $('.btn-checkout').html('CHECKOUT');
+
+            } else if (service == 0) {
+
+                toastr.error('Silahkan Pilih Layanan Kurir !');
+
+                //add disable and loding button
+                $('.btn-checkout').removeAttr('disabled', 'disabled');
+                $('.btn-checkout').html('CHECKOUT');
+
+            } else if (weight.length == "") {
+
+                toastr.error('Berat Belanja Kosong !');
+
+                //add disable and loding button
+                $('.btn-checkout').removeAttr('disabled', 'disabled');
+                $('.btn-checkout').html('CHECKOUT');
+
+            } else if (cost == 0) {
+
+                toastr.error('Biaya Pengiriman Kosong !');
+
+                //add disable and loding button
+                $('.btn-checkout').removeAttr('disabled', 'disabled');
+                $('.btn-checkout').html('CHECKOUT');
+
+            } else if (grand_total.length == "") {
+
+                toastr.error('Grand Total Kosong !');
+
+                //add disable and loding button
+                $('.btn-checkout').removeAttr('disabled', 'disabled');
+                $('.btn-checkout').html('CHECKOUT');
+
+            } else {
+
+                if (isProcessing) {
+                    return;
+                }
+
+                isProcessing = true;
+                $.ajax({
+                    url: "/checkout",
+                    data: {
+                        _token: token,
+                        name: name,
+                        phone: phone,
+                        province: province,
+                        city: city,
+                        district: district,
+                        address: address,
+                        note: note,
+                        courier: courier,
+                        service: service,
+                        weight: weight,
+                        cost: cost,
+                        grand_total: grand_total
+                    },
+                    dataType: "JSON",
+                    type: "POST",
+                    success: function (response) {
+                        isProcessing = false;
+                        if (response.success) {
+
+
+                            //add disable and loding button
+                            $('.btn-checkout').removeAttr('disabled', 'disabled');
+                            $('.btn-checkout').html('CHECKOUT');
+
+
+                            Turbolinks.visit('payment/'+response.data.invoice)
+                        }
+                    },
+                    error: function (response) {
+                        console.log(response);
+                    }
+
+                });
+
+            }
+
+        });
+    });
 </script>

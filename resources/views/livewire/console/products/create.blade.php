@@ -77,7 +77,8 @@
                                 <label>Weight</label>
                                 <input type="number" wire:model.lazy="weight"
                                     class="form-control @error('weight') is-invalid @enderror"
-                                    placeholder="Weight Product">
+                                    placeholder="gram">
+                                    <small class="text-muted">satuan gram</small>
                                 @error('weight')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -114,7 +115,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Unit Weight</label>
+                                <label>stock</label>
                                 <input type="number" wire:model.lazy="unit_weight"
                                     class="form-control @error('unit_weight') is-invalid @enderror"
                                     placeholder="Unit Weight Product">

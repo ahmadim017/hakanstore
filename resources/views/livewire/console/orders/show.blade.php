@@ -132,8 +132,7 @@
                 <div class="breadcrumb">
                     
                     </div>
-                <table class="table"
-                    style="border-style: solid !important;border-color: rgb(198, 206, 214) !important;">
+                <table class="table" style="border-style: solid !important;border-color: rgb(198, 206, 214) !important;">
                     <tbody>
 
                         @foreach ($invoice->order as $order)

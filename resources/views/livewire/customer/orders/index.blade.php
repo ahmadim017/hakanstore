@@ -16,8 +16,8 @@
                         <h6 class="font-weight-bold"><i class="fa fa-shopping-cart"></i> MY ORDERS</h6>
                         <hr>
                         <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead class="thead-dark">
+                            <table class="table table-bordered">
+                                <thead>
                                     <tr>
                                         <th scope="col" class="text-center" style="text-align: center;width: 6%">NO.
                                         </th>
@@ -29,53 +29,53 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($invoice as $i)
+                                    @foreach ($invoices as $no => $invoice)
                                     <tr>
                                         <th scope="row" style="text-align: center">
-                                            {{ $loop->iteration }}</th>
-                                        <td>{{ $i->invoice }}</td>
-                                        <td class="text-right">{{ money_id($i->grand_total) }}</td>
+                                            {{ ++$no + ($invoices->currentPage()-1) * $invoices->perPage() }}</th>
+                                        <td>{{ $invoice->invoice }}</td>
+                                        <td class="text-right">{{ money_id($invoice->grand_total) }}</td>
                                         <td class="text-center">
-                                            @if ($i->status == "pending")
+                                            @if ($invoice->status == "pending")
                                             <button class="btn btn-sm btn-danger"><i
                                                     class="fa fa-circle-notch fa-spin"></i>
-                                                {{ $i->status }}</button>
-                                            @elseif($i->status == "payment_review")
+                                                {{ $invoice->status }}</button>
+                                            @elseif($invoice->status == "payment_review")
                                             <button class="btn btn-sm btn-warning"><i class="fa fa-spinner fa-spin"></i>
-                                                {{ $i->status }}</button>
-                                            @elseif($i->status == "ppayment_invalid")
+                                                {{ $invoice->status }}</button>
+                                            @elseif($invoice->status == "ppayment_invalid")
                                             <button class="btn btn-sm btn-danger"><i class="fa fa-times-circle"></i>
-                                                {{ $i->status }}</button>
-                                            @elseif($i->status == "progress")
+                                                {{ $invoice->status }}</button>
+                                            @elseif($invoice->status == "progress")
                                             <button class="btn btn-sm btn-info"><i class="fa fa-hourglass-start"></i>
-                                                {{ $i->status }}</button>
-                                            @elseif($i->status == "shipping")
+                                                {{ $invoice->status }}</button>
+                                            @elseif($invoice->status == "shipping")
                                             <button class="btn btn-sm btn-primary"><i class="fa fa-truck"></i>
                                                 {{ $invoice->status }}</button>
-                                            @elseif($i->status == "done")
+                                            @elseif($invoice->status == "done")
                                             <button class="btn btn-sm btn-success"><i class="fa fa-check-circle"></i>
-                                                {{ $i->status }}</button>
+                                                {{ $invoice->status }}</button>
                                             @endif
                                         </td>
                                         <td class="text-center" style="width: 20%">
-                                            <a href="{{ route('customer.orders.show', $i->id) }}"
+                                            <a href="{{ route('customer.orders.show', $invoice->id) }}"
                                                 data-toggle="tooltip" data-placement="top" title="Detail"
                                                 class="btn btn-sm btn-primary">
                                                 <i class="fa fa-list-ul"></i>
                                             </a>
-                                            @if ($i->status == "pending" || $i->status ==
+                                            @if ($invoice->status == "pending" || $invoice->status ==
                                             "payment_invalid")
-                                            <a href="{{ route('frontend.payment.index', $i->invoice) }}"
+                                            <a href="{{ route('frontend.payment.index', $invoice->invoice) }}"
                                                 data-toggle="tooltip" data-placement="top" title="Konfirmasi Pembayaran"
                                                 class="btn btn-sm btn-success">
                                                 <i class="fa fa-credit-card"></i>
                                             </a>
                                             @endif
-                                            @if ($i->no_resi != "")
+                                            @if ($invoice->no_resi != "")
                                             <span data-toggle="tooltip" data-placement="top"
                                                 title="Tracking Order Progress">
-                                                <button data-courier="{{ strtolower($i->courier) }}"
-                                                    data-resi="{{ $i->no_resi }}"
+                                                <button data-courier="{{ strtolower($invoice->courier) }}"
+                                                    data-resi="{{ $invoice->no_resi }}"
                                                     class="btn btn-tracking btn-sm btn-primary">
                                                     <i class="fa fa-truck"></i>
                                                 </button>
@@ -87,7 +87,7 @@
                                 </tbody>
                             </table>
                             <div style="text-align: center">
-                                {{ $invoice->links() }}
+                                {{ $invoices->links() }}
                             </div>
                         </div>
                     </div>

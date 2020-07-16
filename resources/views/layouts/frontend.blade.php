@@ -11,8 +11,7 @@
     <!-- CSS only -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <link href="https://raw.githack.com/ttskch/select2-bootstrap4-theme/master/dist/select2-bootstrap4.css" rel="stylesheet" />    
@@ -22,7 +21,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script src="{{ mix('js/app.js') }}"></script>
     <style>
@@ -35,7 +34,7 @@
 <body style="background-color: #e2e8f0;">
 
     <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark text-white mb-5"
-        style="background-color: #171d26!important;">
+        style="background-color: #212422!important;">
         <a href="/" class="navbar-brand font-weight-bold"><i class="fas fa-bicycle"></i> Hakan STORE</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-sk">
             <span class="navbar-toggler-icon"></span>
@@ -55,16 +54,19 @@
             </ul>
             <!-- end categories -->
 
+            
             <!-- search -->
             <div class="mx-2 my-auto d-inline" style="width: 45%">
-                <div class="input-group">
-                    <input type="text" class="form-control border border-right-0" placeholder="Search...">
-                    <span class="input-group-append">
-                        <button class="btn text-dark border border-left-0" style="background-color: white" type="button">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </span>
-                </div>
+                <form action="{{ route('frontend.search.index') }}">
+                        <div class="input-group">
+                            <input type="text" name="q" class="form-control border border-right-0" placeholder="Search...">
+                            <span class="input-group-append">
+                                <button class="btn text-dark border border-left-0" style="background-color: white" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                </form>
             </div>
             <!-- end search -->
 

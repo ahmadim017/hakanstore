@@ -12,10 +12,10 @@ class Index extends Component
 
     public function render()
     {
-        $invoice = Invoice::where('customer_id', auth()->guard('customer')->user()->id)->latest()->paginate(5);
+        $invoices = Invoice::where('customer_id', auth()->guard('customer')->user()->id)->latest()->paginate(5);
 
         return view('livewire.customer.orders.index', [
-            'invoice' => $invoice
+            'invoices' => $invoices
         ]);
     }
 }

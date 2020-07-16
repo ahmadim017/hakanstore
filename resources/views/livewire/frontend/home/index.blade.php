@@ -54,8 +54,8 @@
             <div class="col-4 col-md-2 mb-4">
                 <div class="card h-100 border-0 shadow rounded-md">
                     <div class="card-img">
-                        <img src="{{ Storage::url('public/products/'.$product->image) }}" class="w-100 rounded-t-md"
-                            style="height: 15em;object-fit:cover">
+                    <a href="{{route('frontend.home.show', $product->id)}}"><img src="{{ Storage::url('public/products/'.$product->image) }}" class="w-100 rounded-t-md"
+                            style="height: 15em;object-fit:cover"></a>
                     </div>
                     <div class="card-body">
                         <div class="card-title font-weight-bold" style="font-size:20px">
