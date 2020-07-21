@@ -32,7 +32,7 @@
                                 </ol>
                               </nav>
                               <ul class="list-group list-group-flush">
-                                <li class="list-group-item">Berat :  {{ $product->unit_weight }} {{ $product->unit }}</li>
+                                <li class="list-group-item">Berat :  {{ $product->weight }} {{ $product->unit }}</li>
                                 <li class="list-group-item">Spesifikasi : {{$product->description}}</li>
                               <li class="list-group-item">Deskripsi : {{$product->content}}</li>
                               </ul>
@@ -70,7 +70,7 @@
                         <div class="card-title font-weight-bold" style="font-size:20px">
                             {{ $product->tittle }}
                         </div>
-                        <div class="satuan" style="color: #999">{{ $product->unit_weight }} {{ $product->unit }}</div>
+                        <div class="satuan" style="color: #999">{{ $product->weight }} {{ $product->unit }}</div>
 
 
                         @if ($product->discount > 0)

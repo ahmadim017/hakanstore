@@ -15,6 +15,7 @@ class Index extends Component
 
     public $image;
     public $link;
+    public $status;
 
     public function store()
     {
@@ -26,9 +27,22 @@ class Index extends Component
         $this->image->store('public/sliders');
         Slider::create([
             'link' => $this->link,
+            'status' => 'ACTIVE',
             'image' => $this->image->hashName()
         ]);
         session()->flash('success','Slider Berhasil ditambahkan');
+        return redirect()->back();
+    }
+
+    public function edit($id)
+    {
+        $slider = Slider::findOrfail($id);
+        if ($slider) {
+            $slider->update([
+                'status' => $this->status,
+            ]);
+        } 
+        session()->flash('error','Slider Berhasil dihapus');
         return redirect()->back();
     }
 

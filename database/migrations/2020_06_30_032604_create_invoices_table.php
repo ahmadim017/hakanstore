@@ -29,7 +29,7 @@ class CreateInvoicesTable extends Migration
             $table->text('address');
             $table->text('note')->nullable();
             $table->string('no_resi')->nullable();
-            $table->enum('status', array('pending','peyment_review','peyment_invalid','progress','shipping','done'));
+            $table->enum('status', array('pending','payment_review','payment_invalid','progress','shipping','done'));
             $table->bigInteger('grand_total');
             $table->timestamps();
         });

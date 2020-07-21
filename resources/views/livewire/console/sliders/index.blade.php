@@ -11,6 +11,7 @@
                             <tr>
                                 <th scope="col">NO.</th>
                                 <th scope="col">IMAGE</th>
+                                <th scope="col">Status</th>
                                 <th scope="col">OPTIONS</th>
                             </tr>
                         </thead>
@@ -23,6 +24,13 @@
                                     <img src="{{ Storage::url('public/sliders/'.$s->image) }}" class="w-100 rounded" style="height: 200px">
                                 
                                     <p class="mt-2">{{ $s->link }}</p>
+                                </td>
+                                <td>
+                                    @if ($s->status == 'ACTIVE')
+                                        <span class="badge badge-info">{{$s->status}}</span>
+                                        @else 
+                                        <span class="badge badge-warning">{{$s->status}}</span>
+                                    @endif
                                 </td>
                                 <td class="text-center">
                                     <button wire:click="destroy({{ $s->id }})"

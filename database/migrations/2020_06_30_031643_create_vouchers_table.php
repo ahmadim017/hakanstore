@@ -17,8 +17,8 @@ class CreateVouchersTable extends Migration
             $table->id();
             $table->string('tittle');
             $table->string('voucher');
-            $table->bigInteger('nominal voucher');
-            $table->bigInteger('total minimal shoping');
+            $table->bigInteger('nominal_voucher');
+            $table->bigInteger('total_minimal_shoping');
             $table->text('content');
             $table->string('image');
             $table->timestamps();
