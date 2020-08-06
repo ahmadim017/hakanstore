@@ -24,8 +24,14 @@
                                 <tr style="background: #edf2f7;">
                                     <td class="b-none" width="25%">
                                         <div class="wrapper-image-cart">
-                                            <img src="{{ Storage::url('public/products/'.$product->image) }}"
-                                                style="width: 100%;border-radius: .5rem">
+                                        @if (substr($product->image,0,5) == "https")
+                                        <img 
+                                        src="{{asset($product->image)}}" style="width: 100%;border-radius: .5rem">
+                                        @else 
+                                        <img 
+                                        src="{{Storage::url('public/products/'.$product->image)}}"
+                                        style="width: 100%;border-radius: .5rem">
+                                        @endif
                                         </div>
                                     </td>
                                     <td class="b-none" width="50%">
@@ -37,9 +43,9 @@
                                                 <td style="padding: .20rem">{{ money_id($harga_diskon) }}</td>
                                             </tr>
                                             <tr>
-                                                <td style="padding: .20rem">QTY</td>
+                                                <td style="padding: .20rem">Berat</td>
                                                 <td style="padding: .20rem">:</td>
-                                                <td style="padding: .20rem"><b>{{ $product->unit_weight }}
+                                                <td style="padding: .20rem"><b>{{ $product->weight }}
                                                         {{ $product->unit }}</b></td>
                                             </tr>
                                         </table>

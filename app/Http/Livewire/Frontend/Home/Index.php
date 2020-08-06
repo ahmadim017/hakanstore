@@ -13,9 +13,9 @@ class Index extends Component
 
     public $perPage = 12;
 
-    public function loadmore()
+    public function loadMore()
     {
-        $this->perPage = $this->perPage + 4;
+        $this->perPage = $this->perPage + 6;
     }
 
     public function addToCart(int $prodcutId)

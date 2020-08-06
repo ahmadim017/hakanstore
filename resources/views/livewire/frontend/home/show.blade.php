@@ -10,7 +10,14 @@
         <div class="card mb-3">
             <div class="row no-gutters">
             <div class="col-md-4">
-                <img src="{{ Storage::url('public/products/'.$product->image) }}" class="card-img">
+                @if (substr($product->image,0,5) == "https")
+                                        <img 
+                                        src="{{asset($product->image)}}" class="w-100 rounded-t-md" style="height: 15em;object-fit:cover">
+                                        @else 
+                                        <img 
+                                        src="{{Storage::url('public/products/'.$product->image)}}"
+                                        class="w-100 rounded-t-md" style="height: 15em;object-fit:cover">
+                                        @endif
             </div>
             <div class="col-md-8">
                 <div class="card-body">
@@ -63,8 +70,17 @@
             <div class="col-6 col-md-3 mb-4">
                 <div class="card h-100 border-0 shadow rounded-md">
                     <div class="card-img">
-                    <a href="{{route('frontend.home.show', $product->id)}}"><img src="{{ Storage::url('public/products/'.$product->image) }}" class="w-100 rounded-t-md"
-                            style="height: 15em;object-fit:cover"></a>
+                    <a href="{{route('frontend.home.show', $product->id)}}">
+                        @if (substr($product->image,0,5) == "https")
+                        <img 
+                        src="{{asset($product->image)}}" class="w-100 rounded-t-md" style="height: 15em;object-fit:cover">
+                        @else 
+                        <img 
+                        src="{{Storage::url('public/products/'.$product->image)}}"
+                        class="w-100 rounded-t-md" style="height: 15em;object-fit:cover">
+                        @endif 
+                        
+                    </a>
                     </div>
                     <div class="card-body">
                         <div class="card-title font-weight-bold" style="font-size:20px">

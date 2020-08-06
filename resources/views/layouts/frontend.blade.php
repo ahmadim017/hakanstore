@@ -47,7 +47,14 @@
                     </a>
                     <div class="dropdown-menu border-0 shadow-sm dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                        @foreach ($global_categories as $category)
-                          <a class="dropdown-item" href="/category/{{ $category->slug }}"><img src="{{ Storage::url('public/categories/'.$category->image) }}" class="rounded" style="width: 20px"> {{ $category->name }}</a>
+                          <a class="dropdown-item" href="/category/{{ $category->slug }}">
+
+                        @if (substr($category->image,0,5) == "https")
+                        <img src="{{asset($category->image)}}" class="rounded" style="width: 20px">
+                        @else 
+                        <img src="{{Storage::url('public/categories/'.$category->image)}}" class="rounded" style="width: 20px">
+                        @endif
+                         {{ $category->name }}</a>
                        @endforeach
                     </div>
                  </li>

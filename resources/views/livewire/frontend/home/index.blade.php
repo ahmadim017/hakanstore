@@ -6,8 +6,15 @@
                 @foreach ($sliders as $slider)
                 <div class="carousel-item {{ $active }}">
                     <a href="{{ $slider->link }}">
-                        <img src="{{ Storage::url('public/sliders/').$slider->image }}"
-                            class="d-block w-100 rounded-lg">
+
+                                    @if (substr($slider->image,0,5) == "https")
+                                        <img 
+                                        src="{{asset($slider->image)}}" class="d-block w-100 rounded-lg">
+                                        @else 
+                                        <img 
+                                        src="{{Storage::url('public/sliders/'.$slider->image)}}"
+                                        class="d-block w-100 rounded-lg">
+                                    @endif
                     </a>
                 </div>
                 {{ $active = "" }}
@@ -31,8 +38,14 @@
                 <a href="/category/{{ $category->slug }}" class="text-decoration-none text-dark">
                     <div class="card h-100 border-0 shadow p-2 rounded-lg">
                         <div class="card-img">
-                            <img src="{{ Storage::url('public/categories/'.$category->image) }}"
-                                class="w-50">
+                            @if (substr($category->image,0,5) == "https")
+                                        <img 
+                                        src="{{asset($category->image)}}" class="w-50">
+                                        @else 
+                                        <img 
+                                        src="{{Storage::url('public/categories/'.$category->image)}}"
+                                        class="w-50">
+                                        @endif
                             <div class="title-category mt-2 font-weight-bold">{{ $category->name }}</div>
                         </div>
                     </div>
@@ -54,14 +67,22 @@
             <div class="col-4 col-md-2 mb-4">
                 <div class="card h-100 border-0 shadow rounded-md">
                     <div class="card-img">
-                    <a href="{{route('frontend.home.show', $product->id)}}"><img src="{{ Storage::url('public/products/'.$product->image) }}" class="w-100 rounded-t-md"
-                            style="height: 15em;object-fit:cover"></a>
+                    <a href="{{route('frontend.home.show', $product->id)}}">
+                        @if (substr($product->image,0,5) == "https")
+                                        <img 
+                                        src="{{asset($product->image)}}" class="w-100 rounded-t-md" style="height: 15em;object-fit:cover">
+                                        @else 
+                                        <img 
+                                        src="{{Storage::url('public/products/'.$product->image)}}"
+                                        class="w-100 rounded-t-md" style="height: 15em;object-fit:cover">
+                                        @endif
+                    </a>
                     </div>
                     <div class="card-body">
                         <div class="card-title font-weight-bold" style="font-size:20px">
                             {{ $product->tittle }}
                         </div>
-                        <div class="satuan" style="color: #999">{{ $product->unit_weight }} {{ $product->unit }}</div>
+                        <div class="satuan" style="color: #999">{{ $product->weight }} {{ $product->unit }}</div>
 
 
                         @if ($product->discount > 0)
@@ -80,10 +101,13 @@
             </div>
             @endforeach
         </div>
-        <div class="row justify-content-center mt-5">
+        <div class="row justify-content-center mt-3">
             @if($products->hasMorePages())
-                <button wire:click="loadMore()" class="btn btn-dark btn-lg shadow-md">Load More</button>
+                <button wire:click="loadMore()" class="btn btn-dark btn-sm shadow-md">Load More <div wire:loading wire:target="loadMore">
+                    <i class="fa fa-spinner fa-spin"></i>
+                </div></button>
+                
             @endif
-        </div>
+        </div> 
     </div>
 </div>

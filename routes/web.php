@@ -26,7 +26,7 @@ Route::livewire('/', 'frontend.home.index')
 ->layout('layouts.frontend')->name('root');
 
 View::composer('*', function($view) {
-    $global_categories = \App\Category::latest()->take(6)->get();
+    $global_categories = \App\Category::latest()->get();
     $view->with('global_categories', $global_categories);
 });
 

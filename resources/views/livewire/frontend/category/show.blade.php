@@ -6,7 +6,14 @@
                     <div class="row justify-content-center">
                         <div class="card border-0 shadow rounded-full">
                             <div class="card-body">
-                                <img src="{{ Storage::url('public/categories/'.$category_image) }}" style="width: 70px">
+                                @if (substr($category_image,0,5) == "https")
+                                        <img 
+                                        src="{{asset($category_image)}}" style="width: 70px">
+                                        @else 
+                                        <img 
+                                        src="{{Storage::url('public/categories/'.$category_image)}}"
+                                        style="width: 70px">
+                                        @endif
                             </div>
                         </div>
                     </div>
@@ -23,11 +30,19 @@
             $harga_diskon = $product->price - $harga_set;
             @endphp
 
-            <div class="col-6 col-md-3 mb-4">
+            <div class="col-4 col-md-2 mb-4">
                 <div class="card h-100 border-0 shadow rounded-md">
                     <div class="card-img">
-                    <a href="{{route('frontend.home.show', $product->id)}}"> <img src="{{ Storage::url('public/products/'.$product->image) }}" class="w-100 rounded-t-md"
-                            style="height: 15em;object-fit:cover"></a>
+                    <a href="{{route('frontend.home.show', $product->id)}}"> 
+                        @if (substr($product->image,0,5) == "https")
+                                <img 
+                                src="{{asset($product->image)}}" class="w-100 rounded-t-md" style="height: 15em;object-fit:cover">
+                                @else 
+                                <img 
+                                src="{{Storage::url('public/products/'.$product->image)}}"
+                                class="w-100 rounded-t-md" style="height: 15em;object-fit:cover">
+                        @endif
+                    </a>
                     </div>
                     <div class="card-body">
                         <div class="card-title font-weight-bold" style="font-size:20px">

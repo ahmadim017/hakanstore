@@ -23,7 +23,7 @@ class Show extends Component
 
     public function loadMore()
     {
-        $this->perPage = $this->perPage + 4;
+        $this->perPage = $this->perPage + 6;
     }
 
     public function addToCart(int $productId)
